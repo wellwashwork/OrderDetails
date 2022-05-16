@@ -114,17 +114,14 @@ function AuthProvider({ children }) {
       email,
       password,
     });
-    const response = await axios
-      .post('/api/login', body, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-        },
-      })
-      
+    const response = await axios.post('/api/login', body, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+      },
+    });
 
-     console.log(response);
+    
     const { accessToken, user } = response.data;
-
     setSession(accessToken);
 
     dispatch({

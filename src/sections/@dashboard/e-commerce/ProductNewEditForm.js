@@ -72,10 +72,10 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
-    images: Yup.array().min(1, 'Images is required'),
-    price: Yup.number().moreThan(0, 'Price should not be $0.00'),
+    // name: Yup.string().required('Name is required'),
+    // description: Yup.string().required('Description is required'),
+    images: Yup.array().min(1, 'pdf or excel is required'),
+    // price: Yup.number().moreThan(0, 'Price should not be $0.00'),
   });
 
   const defaultValues = useMemo(
@@ -126,6 +126,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
 
   const onSubmit = async () => {
     try {
+      console.log('onsubmit run');
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(!isEdit ? 'Upload success!' : 'Update success!');
@@ -167,11 +168,11 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <div>
-                <LabelStyle>Upload Files</LabelStyle>
+                <LabelStyle>Upload File</LabelStyle>
                 <RHFUploadMultiFile
                   showPreview
                   name="images"
-                  accept="image/*"
+                  accept=".pdf, .xls, .xlsx"
                   maxSize={3145728}
                   onDrop={handleDrop}
                   onRemove={handleRemove}
@@ -181,7 +182,6 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
               </div>
             </Stack>
           </Card>
-
           <Stack spacing={3}>
             <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
               {!isEdit ? 'Upload' : 'Save Changes'}

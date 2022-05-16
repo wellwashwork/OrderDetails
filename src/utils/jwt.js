@@ -39,6 +39,7 @@ const handleTokenExpired = (exp) => {
 };
 
 const setSession = (accessToken) => {
+  console.log(accessToken);
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;

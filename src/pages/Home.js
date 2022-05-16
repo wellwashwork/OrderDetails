@@ -1,4 +1,4 @@
-// @mui
+ // @mui
 import { styled } from '@mui/material/styles';
 // components
 import Page from '../components/Page';
