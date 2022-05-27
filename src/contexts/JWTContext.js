@@ -75,9 +75,8 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
-
+          
+          const user  = localStorage.getItem('user');
           dispatch({
             type: 'INITIALIZE',
             payload: {
@@ -114,16 +113,17 @@ function AuthProvider({ children }) {
       email,
       password,
     });
+    localStorage.setItem('user', email);
     const response = await axios.post('/api/login', body, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },
     });
 
-    
+    console.log(response)
     const { accessToken, user } = response.data;
     setSession(accessToken);
-
+    
     dispatch({
       type: 'LOGIN',
       payload: {

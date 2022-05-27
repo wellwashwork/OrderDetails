@@ -39,13 +39,14 @@ const handleTokenExpired = (exp) => {
 };
 
 const setSession = (accessToken) => {
-  console.log(accessToken);
+  // console.log(accessToken);
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     // This function below will handle when token is expired
     const { exp } = jwtDecode(accessToken); // ~5 days by minimals server
+    console.log(exp);
     handleTokenExpired(exp);
   } else {
     localStorage.removeItem('accessToken');
