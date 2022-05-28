@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,6 +10,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
 import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
+import axios from '../../../utils/axios';
+
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
@@ -68,7 +70,7 @@ ProductNewEditForm.propTypes = {
 
 export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const navigate = useNavigate();
-
+  const [filelist, setfilelist] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
@@ -126,7 +128,16 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
 
   const onSubmit = async () => {
     try {
-      console.log('onsubmit run');
+      const formData = new FormData();
+      filelist.map((file) => formData.append('files', file));
+
+      await axios
+        .post('api/fileUpload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => console.log(response));
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(!isEdit ? 'Upload success!' : 'Update success!');
@@ -139,7 +150,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const images = values.images || [];
-
+      setfilelist(acceptedFiles);
       setValue('images', [
         ...images,
         ...acceptedFiles.map((file) =>
