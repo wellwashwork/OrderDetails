@@ -27,7 +27,20 @@ InvoiceTableRow.propTypes = {
 export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalPrice } = row;
+  const {
+    id,
+    suborderId,
+    awb,
+    courierProvider,
+    orderDate,
+    sku,
+    productName,
+    listingPrice,
+    size,
+    paymentDate,
+    finalSettlementAmount,
+    status,
+  } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -45,32 +58,27 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>
 
-      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={invoiceTo.name} color={createAvatar(invoiceTo.name).color} sx={{ mr: 2 }}>
-          {createAvatar(invoiceTo.name).name}
-        </Avatar>
+      <TableCell align="center">{id}</TableCell>
+      
+      <TableCell align="center">{suborderId}</TableCell>
 
-        <Stack>
-          <Typography variant="subtitle2" noWrap>
-            {invoiceTo.name}
-          </Typography>
+      <TableCell align="left">{awb}</TableCell>
+     
+      <TableCell align="left">{courierProvider}</TableCell>
+      
+      <TableCell align="left">{fDate(orderDate)}</TableCell>
+      <TableCell align="left">{sku}</TableCell>
+      <TableCell align="left">{productName}</TableCell>
+      <TableCell align="center">{fCurrency(listingPrice)}</TableCell>
+      <TableCell align="center">{size}</TableCell>
 
-          <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>
-            {`INV-${invoiceNumber}`}
-          </Link>
-        </Stack>
-      </TableCell>
+      <TableCell align="left">{fDate(paymentDate)}</TableCell>
 
-      <TableCell align="left">{fDate(createDate)}</TableCell>
-
-      <TableCell align="left">{fDate(dueDate)}</TableCell>
-
-      <TableCell align="center">{fCurrency(totalPrice)}</TableCell>
-
-      <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
+      {/* <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
         {sent}
-      </TableCell>
+      </TableCell> */}
 
+      <TableCell align="center">{fCurrency(finalSettlementAmount)}</TableCell>
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -86,7 +94,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
         </Label>
       </TableCell>
 
-      <TableCell align="right">
+      {/* <TableCell align="right">
         <TableMoreMenu
           open={openMenu}
           onOpen={handleOpenMenu}
@@ -126,7 +134,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
             </>
           }
         />
-      </TableCell>
+      </TableCell> */}
     </TableRow>
   );
 }

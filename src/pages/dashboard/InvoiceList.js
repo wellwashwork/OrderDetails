@@ -1,5 +1,5 @@
 import sumBy from 'lodash/sumBy';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -39,7 +39,7 @@ import { TableNoData, TableEmptyRows, TableHeadCustom, TableSelectedActions } fr
 // sections
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
-
+import axios from '../../utils/axios';
 // ----------------------------------------------------------------------
 
 const SERVICE_OPTIONS = [
@@ -52,12 +52,18 @@ const SERVICE_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Client', align: 'left' },
-  { id: 'createDate', label: 'Create', align: 'left' },
-  { id: 'dueDate', label: 'Due', align: 'left' },
-  { id: 'price', label: 'Amount', align: 'center', width: 140 },
-  { id: 'sent', label: 'Sent', align: 'center', width: 140 },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'id', label: 'id', align: 'left' },
+  { id: 'suborderId', label: 'SuborderId', align: 'left' },
+  { id: 'awb', label: 'AWB', align: 'left' },
+  { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
+  { id: 'orderDate', label: 'orderDate', align: 'right' },
+  { id: 'sku', label: 'sku', align: 'right' },
+  { id: 'productName', label: 'productName', align: 'right' },
+  { id: 'listingPrice', label: 'listingPrice', align: 'right' },
+  { id: 'size', label: 'size', align: 'right' },
+  { id: 'paymentDate', label: 'paymentDate', align: 'right' },
+  { id: 'finalSettlementAmount', label: 'finalSettlementAmount', align: 'right' },
+  { id: 'status', label: 'status', align: 'right' },
   { id: '' },
 ];
 
@@ -89,7 +95,7 @@ export default function InvoiceList() {
     onChangeRowsPerPage,
   } = useTable({ defaultOrderBy: 'createDate' });
 
-  const [tableData, setTableData] = useState(_invoices);
+  const [tableData, setTableData] = useState([]);
 
   const [filterName, setFilterName] = useState('');
 
@@ -159,6 +165,16 @@ export default function InvoiceList() {
 
   const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
+  const mapingApiData = async () => {
+    const response = await axios.get('/api/data');
+    const tableObj = response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
+    console.log(tableObj, 'invoice product api');
+    setTableData(tableObj);
+  };
+  useEffect(() => {
+    mapingApiData();
+  }, []);
+
   const TABS = [
     { value: 'all', label: 'All', color: 'info', count: tableData.length },
     { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
@@ -181,10 +197,10 @@ export default function InvoiceList() {
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.invoice.new}
+              to={PATH_DASHBOARD.eCommerce.new}
               startIcon={<Iconify icon={'eva:plus-fill'} />}
             >
-              New Invoice
+              Upload File
             </Button>
           }
         />
@@ -405,8 +421,8 @@ function applySortFilter({
   if (filterName) {
     tableData = tableData.filter(
       (item) =>
-        item.invoiceNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.invoiceTo.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+        item.suborderId.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.courierProvider.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
@@ -421,7 +437,7 @@ function applySortFilter({
   if (filterStartDate && filterEndDate) {
     tableData = tableData.filter(
       (item) =>
-        item.createDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
+        item.orderDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
     );
   }
 

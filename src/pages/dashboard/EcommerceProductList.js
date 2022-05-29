@@ -43,7 +43,8 @@ import axios from '../../utils/axios';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'SuborderId', label: 'SuborderId', align: 'left' },
+  { id: 'Id', label: 'Sr No.', align: 'left' },
+  { id: 'suborderId', label: 'SuborderId', align: 'left' },
   { id: 'awb', label: 'AWB', align: 'left' },
   { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
   { id: 'orderDate', label: 'orderDate', align: 'right' },
@@ -113,12 +114,12 @@ export default function EcommerceProductList() {
   };
 
   const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
+    const deleteRow = tableData.filter((row) => row.suborderId !== id);
     setSelected([]);
     setTableData(deleteRow);
   };
   const handleDeleteRows = (selected) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
+    const deleteRows = tableData.filter((row) => !selected.includes(row.suborderId));
     setSelected([]);
     setTableData(deleteRows);
   };
@@ -175,7 +176,7 @@ export default function EcommerceProductList() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row.suborderId)
                     )
                   }
                   actions={
@@ -199,7 +200,7 @@ export default function EcommerceProductList() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row.suborderId)
                     )
                   }
                 />
@@ -210,12 +211,13 @@ export default function EcommerceProductList() {
                     .map((row, index) =>
                       row ? (
                         <ProductTableRow
-                          key={row.id}
+                          key={index}
+                          srno={index}
                           row={row}
-                          selected={selected.includes(row.id)}
-                          onSelectRow={() => onSelectRow(row.id)}
-                          onDeleteRow={() => handleDeleteRow(row.id)}
-                          onEditRow={() => handleEditRow(row.name)}
+                          selected={selected.includes(row.suborderId)}
+                          onSelectRow={() => onSelectRow(row.suborderId)}
+                          onDeleteRow={() => handleDeleteRow(row.suborderId)}
+                          onEditRow={() => handleEditRow(row.suborderId)}
                         />
                       ) : (
                         !isNotFound && <TableSkeleton key={index} sx={{ height: denseHeight }} />

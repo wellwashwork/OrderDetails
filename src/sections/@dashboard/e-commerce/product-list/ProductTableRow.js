@@ -56,6 +56,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
       <TableCell>{orderDate}</TableCell>
       <TableCell>{productName}</TableCell>
       <TableCell>{awb}</TableCell>
+      <TableCell>{}</TableCell>
 {/* 
       <TableCell align="center">
         <Label
