@@ -27,7 +27,7 @@ ProductTableRow.propTypes = {
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, cover, createdAt, inventoryType, price } = row;
+  const { suborderId, awb, courierProvider, orderDate, productName } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -46,14 +46,17 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
       </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Image disabledEffect alt={name} src={cover} sx={{ borderRadius: 1.5, width: 48, height: 48, mr: 2 }} />
         <Typography variant="subtitle2" noWrap>
-          {name}
+          {suborderId}
         </Typography>
       </TableCell>
 
-      <TableCell>{fDate(createdAt)}</TableCell>
-
+      <TableCell>{awb}</TableCell>
+      <TableCell>{courierProvider}</TableCell>
+      <TableCell>{orderDate}</TableCell>
+      <TableCell>{productName}</TableCell>
+      <TableCell>{awb}</TableCell>
+{/* 
       <TableCell align="center">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -97,7 +100,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
             </>
           }
         />
-      </TableCell>
+      </TableCell> */}
     </TableRow>
   );
 }

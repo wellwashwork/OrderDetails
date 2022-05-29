@@ -38,14 +38,23 @@ import {
 } from '../../components/table';
 // sections
 import { ProductTableRow, ProductTableToolbar } from '../../sections/@dashboard/e-commerce/product-list';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Product', align: 'left' },
-  { id: 'createdAt', label: 'Create at', align: 'left' },
-  { id: 'inventoryType', label: 'Status', align: 'center', width: 180 },
-  { id: 'price', label: 'Price', align: 'right' },
+  { id: 'SuborderId', label: 'SuborderId', align: 'left' },
+  { id: 'awb', label: 'AWB', align: 'left' },
+  { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
+  { id: 'orderDate', label: 'orderDate', align: 'right' },
+  { id: 'sku', label: 'sku', align: 'right' },
+  { id: 'productName', label: 'productName', align: 'right' },
+  { id: 'listingPrice', label: 'listingPrice', align: 'right' },
+  { id: 'size', label: 'size', align: 'right' },
+  { id: 'liveOrderStatus', label: 'liveOrderStatus', align: 'right' },
+  { id: 'paymentDate', label: 'paymentDate', align: 'right' },
+  { id: 'finalSettlementAmount', label: 'finalSettlementAmount', align: 'right' },
+  { id: 'status', label: 'status', align: 'right' },
   { id: '' },
 ];
 
@@ -89,11 +98,14 @@ export default function EcommerceProductList() {
     dispatch(getProducts());
   }, [dispatch]);
 
+  const mapingApiData = async () => {
+    const response = await axios.get('/api/data');
+    console.log(response.data, 'ecomm product api');
+    setTableData(response.data);
+  };
   useEffect(() => {
-    if (products.length) {
-      setTableData(products);
-    }
-  }, [products]);
+    mapingApiData();
+  }, []);
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
@@ -105,7 +117,6 @@ export default function EcommerceProductList() {
     setSelected([]);
     setTableData(deleteRow);
   };
-
   const handleDeleteRows = (selected) => {
     const deleteRows = tableData.filter((row) => !selected.includes(row.id));
     setSelected([]);
@@ -146,7 +157,7 @@ export default function EcommerceProductList() {
               component={RouterLink}
               to={PATH_DASHBOARD.eCommerce.new}
             >
-              New Product
+              Upload File
             </Button>
           }
         />
@@ -246,18 +257,18 @@ export default function EcommerceProductList() {
 
 function applySortFilter({ tableData, comparator, filterName }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
-
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-
+  console.log(tableData,"for sort");
   tableData = stabilizedThis.map((el) => el[0]);
-
+  console.warn(tableData,"after stabo");
   if (filterName) {
-    tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
+    tableData = tableData.filter((item) => item.courierProvider.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
   }
-
+ 
+  console.log(tableData,"final retun");
   return tableData;
 }
