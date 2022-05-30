@@ -173,10 +173,25 @@ export default function InvoiceList() {
     // console.log(tableObj, 'invoice product api');
     setTableData(tableObj);
   };
+  const filterDataApi = async (filterStartDate, filterEndDate) => {
+    const newStartDate = moment(filterStartDate).format('DD MMM, YYYY');
+    const newEndDate = moment(filterEndDate).format('DD MMM, YYYY');
+
+     console.log(newStartDate, newEndDate, 'call from filter fun');
+    const response = await axios.get(`/api/data?startDate=${newStartDate}&endDate=${newEndDate}`);
+    const tableObj = await response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
+     console.log(tableObj,"filterDataAPi")
+    setTableData(tableObj);
+  };
+  
+
+  useEffect(() => {
+    filterDataApi(filterStartDate,filterEndDate);
+  }, [filterStartDate,filterEndDate]);
+
   useEffect(() => {
     mapingApiData();
   }, []);
-
   const TABS = [
     { value: 'all', label: 'All', color: 'info', count: tableData.length },
     { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
@@ -435,22 +450,14 @@ function applySortFilter({
   }
 
   if (filterStartDate && filterEndDate) {
-    const newStartDate = moment(filterStartDate).format('DD MMM, YYYY');
-    const newEndDate = moment(filterEndDate).format('DD MMM, YYYY');
+    
 
-    console.log(newStartDate, newEndDate, 'call from filter fun');
-    
-    tableData = filterDataApi(newStartDate, newEndDate);
-    
+    // tableData = filterDataApi(newStartDate, newEndDate);
+
     //  tableData = tableData.filter((item) => item.orderDate >= newStartDate && item.orderDate <= newEndDate);
-  
-    console.log(tableData,"sort fun");
+
   }
-  
+
   return tableData;
 }
-const filterDataApi = async (newStartDate, newEndDate) => {
-  const response = await axios.get(`/api/data?startDate=${newStartDate}&endDate=${newEndDate}`);
-  const tableObj = await response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
-  return tableObj;
-};
+
