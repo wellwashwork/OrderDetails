@@ -100,7 +100,7 @@ export default function InvoiceTableToolbar({
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search client or invoice number..."
+        placeholder="Search Suborderid or Courier Provider..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

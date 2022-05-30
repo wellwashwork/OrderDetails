@@ -62,13 +62,13 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
       
       <TableCell align="center">{suborderId}</TableCell>
 
-      <TableCell align="left">{awb}</TableCell>
+      <TableCell align="center">{awb}</TableCell>
      
-      <TableCell align="left">{courierProvider}</TableCell>
+      <TableCell align="center">{courierProvider}</TableCell>
       
-      <TableCell align="left">{fDate(orderDate)}</TableCell>
-      <TableCell align="left">{sku}</TableCell>
-      <TableCell align="left">{productName}</TableCell>
+      <TableCell align="center">{fDate(orderDate)}</TableCell>
+      <TableCell align="center">{sku}</TableCell>
+      <TableCell align="center">{productName}</TableCell>
       <TableCell align="center">{fCurrency(listingPrice)}</TableCell>
       <TableCell align="center">{size}</TableCell>
 
@@ -79,11 +79,11 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
       </TableCell> */}
 
       <TableCell align="center">{fCurrency(finalSettlementAmount)}</TableCell>
-      <TableCell align="left">
+      <TableCell align="center">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (status === 'paid' && 'success') ||
+            (status === 'IN PROCESS' && 'success') ||
             (status === 'unpaid' && 'warning') ||
             (status === 'overdue' && 'error') ||
             'default'

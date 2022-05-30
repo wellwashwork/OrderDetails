@@ -1,6 +1,7 @@
 import sumBy from 'lodash/sumBy';
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import moment from 'moment';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -21,6 +22,7 @@ import {
   TablePagination,
   FormControlLabel,
 } from '@mui/material';
+
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -40,6 +42,7 @@ import { TableNoData, TableEmptyRows, TableHeadCustom, TableSelectedActions } fr
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
 import axios from '../../utils/axios';
+
 // ----------------------------------------------------------------------
 
 const SERVICE_OPTIONS = [
@@ -52,18 +55,18 @@ const SERVICE_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'id', align: 'left' },
-  { id: 'suborderId', label: 'SuborderId', align: 'left' },
-  { id: 'awb', label: 'AWB', align: 'left' },
+  { id: 'id', label: 'id', align: 'center' },
+  { id: 'suborderId', label: 'SuborderId', align: 'center' },
+  { id: 'awb', label: 'AWB', align: 'center' },
   { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
-  { id: 'orderDate', label: 'orderDate', align: 'right' },
-  { id: 'sku', label: 'sku', align: 'right' },
-  { id: 'productName', label: 'productName', align: 'right' },
-  { id: 'listingPrice', label: 'listingPrice', align: 'right' },
-  { id: 'size', label: 'size', align: 'right' },
-  { id: 'paymentDate', label: 'paymentDate', align: 'right' },
-  { id: 'finalSettlementAmount', label: 'finalSettlementAmount', align: 'right' },
-  { id: 'status', label: 'status', align: 'right' },
+  { id: 'orderDate', label: 'orderDate', align: 'center' },
+  { id: 'sku', label: 'sku', align: 'center' },
+  { id: 'productName', label: 'productName', align: 'center' },
+  { id: 'listingPrice', label: 'listingPrice', align: 'center' },
+  { id: 'size', label: 'size', align: 'center' },
+  { id: 'paymentDate', label: 'paymentDate', align: 'center' },
+  { id: 'finalSettlementAmount', label: 'finalSettlementAmount', align: 'center' },
+  { id: 'status', label: 'status', align: 'center' },
   { id: '' },
 ];
 
@@ -135,7 +138,6 @@ export default function InvoiceList() {
   const handleViewRow = (id) => {
     navigate(PATH_DASHBOARD.invoice.view(id));
   };
-
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
@@ -168,7 +170,7 @@ export default function InvoiceList() {
   const mapingApiData = async () => {
     const response = await axios.get('/api/data');
     const tableObj = response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
-    console.log(tableObj, 'invoice product api');
+    // console.log(tableObj, 'invoice product api');
     setTableData(tableObj);
   };
   useEffect(() => {
@@ -184,13 +186,13 @@ export default function InvoiceList() {
   ];
 
   return (
-    <Page title="Invoice: List">
+    <Page title="Order: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice List"
+          heading="Order List"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Invoices', href: PATH_DASHBOARD.invoice.root },
+            { name: 'Orders', href: PATH_DASHBOARD.invoice.root },
             { name: 'List' },
           ]}
           action={
@@ -398,7 +400,6 @@ export default function InvoiceList() {
 }
 
 // ----------------------------------------------------------------------
-
 function applySortFilter({
   tableData,
   comparator,
@@ -417,7 +418,6 @@ function applySortFilter({
   });
 
   tableData = stabilizedThis.map((el) => el[0]);
-
   if (filterName) {
     tableData = tableData.filter(
       (item) =>
@@ -435,11 +435,22 @@ function applySortFilter({
   }
 
   if (filterStartDate && filterEndDate) {
-    tableData = tableData.filter(
-      (item) =>
-        item.orderDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
-    );
-  }
+    const newStartDate = moment(filterStartDate).format('DD MMM, YYYY');
+    const newEndDate = moment(filterEndDate).format('DD MMM, YYYY');
 
+    console.log(newStartDate, newEndDate, 'call from filter fun');
+    
+    tableData = filterDataApi(newStartDate, newEndDate);
+    
+    //  tableData = tableData.filter((item) => item.orderDate >= newStartDate && item.orderDate <= newEndDate);
+  
+    console.log(tableData,"sort fun");
+  }
+  
   return tableData;
 }
+const filterDataApi = async (newStartDate, newEndDate) => {
+  const response = await axios.get(`/api/data?startDate=${newStartDate}&endDate=${newEndDate}`);
+  const tableObj = await response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
+  return tableObj;
+};
