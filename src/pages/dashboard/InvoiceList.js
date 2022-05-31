@@ -177,10 +177,8 @@ export default function InvoiceList() {
     const newStartDate = moment(filterStartDate).format('DD MMM, YYYY');
     const newEndDate = moment(filterEndDate).format('DD MMM, YYYY');
 
-     console.log(newStartDate, newEndDate, 'call from filter fun');
     const response = await axios.get(`/api/data?startDate=${newStartDate}&endDate=${newEndDate}`);
     const tableObj = await response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
-     console.log(tableObj,"filterDataAPi")
     setTableData(tableObj);
   };
   
@@ -194,9 +192,10 @@ export default function InvoiceList() {
   }, []);
   const TABS = [
     { value: 'all', label: 'All', color: 'info', count: tableData.length },
-    { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
-    { value: 'unpaid', label: 'Unpaid', color: 'warning', count: getLengthByStatus('unpaid') },
-    { value: 'overdue', label: 'Overdue', color: 'error', count: getLengthByStatus('overdue') },
+    { value: 'IN PROCESS', label: 'IN PROCESS', color: 'info', count: getLengthByStatus('IN PROCESS') },
+    { value: 'DELIVERED', label: 'DELIVERED', color: 'success', count: getLengthByStatus('DELIVERED') },
+    { value: 'RTO RETURN', label: 'RTO RETURN', color: 'warning', count: getLengthByStatus('RTO RETURN') },
+    { value: 'RETURN RECEIVED', label: 'RETURN RECEIVED', color: 'error', count: getLengthByStatus('RETURN RECEIVED') },
     { value: 'draft', label: 'Draft', color: 'default', count: getLengthByStatus('draft') },
   ];
 
@@ -230,33 +229,33 @@ export default function InvoiceList() {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Total"
-                total={tableData.length}
-                percent={100}
+                title="IN PROCESS"
+                total={getLengthByStatus('IN PROCESS')}
+                percent={getPercentByStatus('IN PROCESS')}
                 price={sumBy(tableData, 'totalPrice')}
                 icon="ic:round-receipt"
                 color={theme.palette.info.main}
               />
               <InvoiceAnalytic
-                title="Paid"
-                total={getLengthByStatus('paid')}
-                percent={getPercentByStatus('paid')}
+                title="DELIVERED"
+                total={getLengthByStatus('DELIVERED')}
+                percent={getPercentByStatus('DELIVERED')}
                 price={getTotalPriceByStatus('paid')}
                 icon="eva:checkmark-circle-2-fill"
                 color={theme.palette.success.main}
               />
               <InvoiceAnalytic
-                title="Unpaid"
-                total={getLengthByStatus('unpaid')}
-                percent={getPercentByStatus('unpaid')}
+                title="RTO RETURN"
+                total={getLengthByStatus('RTO RETURN')}
+                percent={getPercentByStatus('RTO RETURN')}
                 price={getTotalPriceByStatus('unpaid')}
                 icon="eva:clock-fill"
                 color={theme.palette.warning.main}
               />
               <InvoiceAnalytic
-                title="Overdue"
-                total={getLengthByStatus('overdue')}
-                percent={getPercentByStatus('overdue')}
+                title="RETURN RECEIVED"
+                total={getLengthByStatus('RETURN RECEIVED')}
+                percent={getPercentByStatus('RETURN RECEIVED')}
                 price={getTotalPriceByStatus('overdue')}
                 icon="eva:bell-fill"
                 color={theme.palette.error.main}

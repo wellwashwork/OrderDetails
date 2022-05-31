@@ -72,7 +72,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
       <TableCell align="center">{fCurrency(listingPrice)}</TableCell>
       <TableCell align="center">{size}</TableCell>
 
-      <TableCell align="left">{fDate(paymentDate)}</TableCell>
+      <TableCell align="left">{paymentDate}</TableCell>
 
       {/* <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
         {sent}
@@ -83,9 +83,10 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (status === 'IN PROCESS' && 'success') ||
-            (status === 'unpaid' && 'warning') ||
-            (status === 'overdue' && 'error') ||
+            (status === 'DELIVERED' && 'success') ||
+            (status === 'IN PROCESS' && 'warning') ||
+            (status === 'RETURN RECEIVED' && 'success') ||
+            (status === 'RTO RETURN' && 'error') ||
             'default'
           }
           sx={{ textTransform: 'capitalize' }}

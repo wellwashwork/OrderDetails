@@ -101,7 +101,7 @@ export default function EcommerceProductList() {
 
   const mapingApiData = async () => {
     const response = await axios.get('/api/data');
-    console.log(response.data, 'ecomm product api');
+    // console.log(response.data, 'ecomm product api');
     setTableData(response.data);
   };
   useEffect(() => {
@@ -118,7 +118,19 @@ export default function EcommerceProductList() {
     setSelected([]);
     setTableData(deleteRow);
   };
-  const handleDeleteRows = (selected) => {
+  const handleSendRows = (selected) => {
+    const selectRow = tableData.filter((row) => selected.includes(row.suborderId));
+    const userId = localStorage.getItem('userId');
+    const apiBody = selectRow.map((row) => {
+      const { suborderId, awb } = row;
+      const body = { suborderId, awb, userId, isReturnReceived: 'yes' };
+      console.log(body);
+
+      return body;
+    });
+    console.log(apiBody);
+    axios.post('/api/save/courierReturnInfo', apiBody).then((response) => console.log(response));
+
     const deleteRows = tableData.filter((row) => !selected.includes(row.suborderId));
     setSelected([]);
     setTableData(deleteRows);
@@ -180,9 +192,9 @@ export default function EcommerceProductList() {
                     )
                   }
                   actions={
-                    <Tooltip title="Delete">
-                      <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                        <Iconify icon={'eva:trash-2-outline'} />
+                    <Tooltip title="Sent">
+                      <IconButton color="primary" onClick={() => handleSendRows(selected)}>
+                        <Iconify icon={'ic:round-send'} />
                       </IconButton>
                     </Tooltip>
                   }
@@ -264,13 +276,13 @@ function applySortFilter({ tableData, comparator, filterName }) {
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  console.log(tableData,"for sort");
+  // console.log(tableData, 'for sort');
   tableData = stabilizedThis.map((el) => el[0]);
-  console.warn(tableData,"after stabo");
+  // console.warn(tableData, 'after stabo');
   if (filterName) {
     tableData = tableData.filter((item) => item.courierProvider.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
   }
- 
-  console.log(tableData,"final retun");
+
+  // console.log(tableData, 'final retun');
   return tableData;
 }
