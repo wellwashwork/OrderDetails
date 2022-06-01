@@ -128,7 +128,6 @@ export default function EcommerceProductList() {
 
       return body;
     });
-    console.log(apiBody);
     axios.post('/api/save/courierReturnInfo', apiBody); // .then((response) => console.log(response));
 
     const deleteRows = tableData.filter((row) => !selected.includes(row.suborderId));

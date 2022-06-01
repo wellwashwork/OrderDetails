@@ -31,6 +31,12 @@ export default function InvoiceTableToolbar({
   onFilterStartDate,
   onFilterEndDate,
 }) {
+  const propsdate = {};
+  if (filterService === 'Custom') {
+    propsdate.disabled = null;
+  } else {
+    propsdate.disabled = 'disabled';
+  }
   return (
     <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
       <TextField
@@ -69,6 +75,7 @@ export default function InvoiceTableToolbar({
         label="Start date"
         value={filterStartDate}
         onChange={onFilterStartDate}
+        {...propsdate}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -79,11 +86,12 @@ export default function InvoiceTableToolbar({
           />
         )}
       />
-      
+
       <DatePicker
         label="End date"
         value={filterEndDate}
         onChange={onFilterEndDate}
+        {...propsdate}
         renderInput={(params) => (
           <TextField
             {...params}
