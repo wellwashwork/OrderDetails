@@ -47,11 +47,17 @@ import axios from '../../utils/axios';
 
 const SERVICE_OPTIONS = [
   'all',
-  'full stack development',
-  'backend development',
-  'ui design',
-  'ui/ux design',
-  'front end development',
+  'Today',
+  'This Week',
+  'This Month',
+  'This Quarter',
+  'This Year',
+  'Yesterday',
+  'Previous Week',
+  'Previous Month',
+  'Previous Quarter',
+  'Previous Year',
+  'Custom',
 ];
 
 const TABLE_HEAD = [
@@ -181,11 +187,89 @@ export default function InvoiceList() {
     const tableObj = await response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
     setTableData(tableObj);
   };
-  
+  const dateFilter = (filterService) => {
+    // const dateRange = {filterStartDate,filterEndDate};
+    const date = new Date();
+    const currentMonth = date.getMonth();
+    const currentYear = date.getFullYear();
+    if (filterService === 'Today') {
+      setFilterStartDate(date);
+      setFilterEndDate(date);
+    }
+    if (filterService === 'This Week') {
+      const dDay = date.getDay() > 0 ? date.getDay() : 7;
+      const first = date.getDate() - dDay + 1;
+      const firstDayWeek = new Date(date.setDate(first));
+      setFilterStartDate(firstDayWeek);
+      setFilterEndDate(new Date());
+      console.log(filterStartDate, filterEndDate);
+    }
+    if (filterService === 'This Month') {
+      const firstDayofMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+      setFilterStartDate(firstDayofMonth);
+      setFilterEndDate(date);
+    }
+    if (filterService === 'This Quarter') {
+      let start = Math.floor(currentMonth / 3) * 3;
+      start += 1;
+      const varint = '-01-';
+      const startDate = new Date(start + varint + currentYear);
+      //  const firstDayofQuater = moment().startOf('quarter');
+      setFilterStartDate(startDate);
+      setFilterEndDate(date);
+    }
+    if (filterService === 'This Year') {
+      const startDate = new Date(currentYear, 0, 1);
+      setFilterStartDate(startDate);
+      setFilterEndDate(date);
+    }
+    if (filterService === 'Yesterday') {
+      const startDate = date.setDate(date.getDate() - 1);
+      setFilterStartDate(new Date(startDate));
+      setFilterEndDate(new Date(startDate));
 
+    }
+    if (filterService === 'Previous Week') {
+      const startDate = moment().subtract(1, 'week').startOf('week');
+      const endDate = moment().subtract(1, 'week').endOf('week');
+      setFilterStartDate(new Date(startDate));
+      setFilterEndDate(new Date(endDate));
+
+    }
+    if (filterService === 'Previous Month') {
+      const startDate = moment().subtract(1, 'month').startOf('month');
+      const endDate = moment().subtract(1, 'month').endOf('month');
+      setFilterStartDate(new Date(startDate));
+      setFilterEndDate(new Date(endDate));
+
+    }
+    if (filterService === 'Previous Quarter') {
+      const startDate = moment().subtract(1, 'quarter').startOf('quarter');
+      const endDate = moment().subtract(1, 'quarter').endOf('quarter');
+      setFilterStartDate(new Date(startDate));
+      setFilterEndDate(new Date(endDate));
+
+    }
+    if (filterService === 'Previous Year') {
+      const startDate = moment().subtract(1, 'year').startOf('year');
+      const endDate = moment().subtract(1, 'year').endOf('year');
+      setFilterStartDate(new Date(startDate));
+      setFilterEndDate(new Date(endDate));
+
+    }
+    if (filterService === 'Custom') {
+     
+      setFilterStartDate(null);
+      setFilterEndDate(null);
+
+    }
+  };
   useEffect(() => {
-    filterDataApi(filterStartDate,filterEndDate);
-  }, [filterStartDate,filterEndDate]);
+    dateFilter(filterService);
+  }, [filterService]);
+  useEffect(() => {
+    filterDataApi(filterStartDate, filterEndDate);
+  }, [filterStartDate, filterEndDate]);
 
   useEffect(() => {
     mapingApiData();
@@ -444,19 +528,14 @@ function applySortFilter({
     tableData = tableData.filter((item) => item.status === filterStatus);
   }
 
-  if (filterService !== 'all') {
-    tableData = tableData.filter((item) => item.items.some((c) => c.service === filterService));
-  }
+  // if (filterService !== 'all') {
+  //   tableData = tableData.filter((item) => item.some((c) => c.service === filterService));
+  // }
 
   if (filterStartDate && filterEndDate) {
-    
-
     // tableData = filterDataApi(newStartDate, newEndDate);
-
     //  tableData = tableData.filter((item) => item.orderDate >= newStartDate && item.orderDate <= newEndDate);
-
   }
 
   return tableData;
 }
-

@@ -65,7 +65,6 @@ export default function InvoiceTableToolbar({
           </MenuItem>
         ))}
       </TextField>
-
       <DatePicker
         label="Start date"
         value={filterStartDate}
@@ -80,7 +79,7 @@ export default function InvoiceTableToolbar({
           />
         )}
       />
-
+      
       <DatePicker
         label="End date"
         value={filterEndDate}
@@ -95,7 +94,6 @@ export default function InvoiceTableToolbar({
           />
         )}
       />
-
       <TextField
         fullWidth
         value={filterName}
