@@ -27,7 +27,7 @@ ProductTableRow.propTypes = {
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { suborderId, awb, courierProvider, orderDate, productName } = row;
+  const { sNo, suborderId, awb, courierProvider, date, sku, size, supplier } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -45,19 +45,20 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>
 
-      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+      <TableCell >
         <Typography variant="subtitle2" noWrap>
-          {suborderId}
+          {sNo}
         </Typography>
       </TableCell>
+      <TableCell>{suborderId}</TableCell>
+      <TableCell>{awb}</TableCell>
 
-      <TableCell>{awb}</TableCell>
       <TableCell>{courierProvider}</TableCell>
-      <TableCell>{orderDate}</TableCell>
-      <TableCell>{productName}</TableCell>
-      <TableCell>{awb}</TableCell>
-      <TableCell>{}</TableCell>
-{/* 
+      <TableCell>{date}</TableCell>
+      <TableCell>{sku}</TableCell>
+      <TableCell>{size}</TableCell>
+      <TableCell>{supplier}</TableCell>
+      {/* 
       <TableCell align="center">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

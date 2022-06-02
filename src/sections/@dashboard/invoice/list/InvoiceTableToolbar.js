@@ -33,9 +33,9 @@ export default function InvoiceTableToolbar({
 }) {
   const propsdate = {};
   if (filterService === 'Custom') {
-    propsdate.disabled = null;
+    propsdate.disabled = false;
   } else {
-    propsdate.disabled = 'disabled';
+    propsdate.disabled = true;
   }
   return (
     <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>

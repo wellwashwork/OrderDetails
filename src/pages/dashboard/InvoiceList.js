@@ -266,10 +266,11 @@ export default function InvoiceList() {
   };
   useEffect(() => {
     dateFilter(filterService);
+    // filterDataApi(filterStartDate, filterEndDate);
   }, [filterService]);
   useEffect(() => {
     filterDataApi(filterStartDate, filterEndDate);
-  }, [filterStartDate, filterEndDate]);
+  }, [filterEndDate]);
 
   useEffect(() => {
     mapingApiData();

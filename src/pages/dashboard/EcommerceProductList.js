@@ -49,12 +49,8 @@ const TABLE_HEAD = [
   { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
   { id: 'orderDate', label: 'orderDate', align: 'right' },
   { id: 'sku', label: 'sku', align: 'right' },
-  { id: 'productName', label: 'productName', align: 'right' },
-  { id: 'listingPrice', label: 'listingPrice', align: 'right' },
   { id: 'size', label: 'size', align: 'right' },
-  { id: 'liveOrderStatus', label: 'liveOrderStatus', align: 'right' },
-  { id: 'paymentDate', label: 'paymentDate', align: 'right' },
-  { id: 'finalSettlementAmount', label: 'finalSettlementAmount', align: 'right' },
+  { id: 'supplier', label: 'supplier', align: 'right' },
   { id: 'status', label: 'status', align: 'right' },
   { id: '' },
 ];
@@ -100,8 +96,8 @@ export default function EcommerceProductList() {
   }, [dispatch]);
 
   const mapingApiData = async () => {
-    const response = await axios.get('/api/data');
-    // console.log(response.data, 'ecomm product api');
+    const response = await axios.get('/api/orderDetail');
+   console.log(response.data, 'ecomm product api');
     setTableData(response.data);
   };
   useEffect(() => {
