@@ -1,6 +1,8 @@
 import { paramCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+
 // @mui
 import {
   Box,
@@ -43,15 +45,15 @@ import axios from '../../utils/axios';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'Id', label: 'Sr No.', align: 'left' },
-  { id: 'suborderId', label: 'SuborderId', align: 'left' },
-  { id: 'awb', label: 'AWB', align: 'left' },
+  { id: 'Id', label: 'Sr No.', align: 'center' },
+  { id: 'suborderId', label: 'SuborderId', align: 'center' },
+  { id: 'awb', label: 'AWB', align: 'center' },
   { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
-  { id: 'orderDate', label: 'orderDate', align: 'right' },
-  { id: 'sku', label: 'sku', align: 'right' },
-  { id: 'size', label: 'size', align: 'right' },
-  { id: 'supplier', label: 'supplier', align: 'right' },
-  { id: 'status', label: 'status', align: 'right' },
+  { id: 'orderDate', label: 'orderDate', align: 'center' },
+  { id: 'sku', label: 'sku', align: 'center' },
+  { id: 'size', label: 'size', align: 'center' },
+  { id: 'supplier', label: 'supplier', align: 'center' },
+  { id: 'status', label: 'status', align: 'center' },
   { id: '' },
 ];
 
@@ -85,6 +87,8 @@ export default function EcommerceProductList() {
 
   const dispatch = useDispatch();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const { products, isLoading } = useSelector((state) => state.product);
 
   const [tableData, setTableData] = useState([]);
@@ -97,7 +101,7 @@ export default function EcommerceProductList() {
 
   const mapingApiData = async () => {
     const response = await axios.get('/api/orderDetail');
-   console.log(response.data, 'ecomm product api');
+    console.log(response.data, 'ecomm product api');
     setTableData(response.data);
   };
   useEffect(() => {
@@ -124,10 +128,13 @@ export default function EcommerceProductList() {
 
       return body;
     });
-    axios.post('/api/save/courierReturnInfo', apiBody); // .then((response) => console.log(response));
+    axios
+      .post('/api/save/courierReturnInfo', apiBody)
+      .then((response) => (!response ? enqueueSnackbar('Return not success!') : enqueueSnackbar('Return success!')));
 
     const deleteRows = tableData.filter((row) => !selected.includes(row.suborderId));
     setSelected([]);
+
     setTableData(deleteRows);
   };
 
@@ -149,7 +156,7 @@ export default function EcommerceProductList() {
     <Page title="Ecommerce: Product List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Product List"
+          heading="Return Not Received List"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
@@ -158,16 +165,6 @@ export default function EcommerceProductList() {
             },
             { name: 'Product List' },
           ]}
-          action={
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-              component={RouterLink}
-              to={PATH_DASHBOARD.eCommerce.new}
-            >
-              Upload File
-            </Button>
-          }
         />
 
         <Card>
