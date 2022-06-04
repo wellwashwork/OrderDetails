@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Container, Grid, Stack, Button } from '@mui/material';
+import { PATH_DASHBOARD } from '../../routes/paths';
+
 import axios from '../../utils/axios';
 
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
 // _mock_
-import { _appFeatured, _appAuthors, _appInstalled, _appRelated, _appInvoices } from '../../_mock';
+import { _appFeatured, _appAuthors, _appInstalled, _appRelated, _appInvoices, _courierProvider } from '../../_mock';
 // components
 import Page from '../../components/Page';
 // sections
@@ -62,7 +65,11 @@ export default function GeneralApp() {
                   }}
                 />
               }
-              action={<Button variant="contained">Go Now</Button>}
+              action={
+                <Button variant="contained" component={RouterLink} to={PATH_DASHBOARD.eCommerce.new}>
+                  Upload File
+                </Button>
+              }
             />
           </Grid>
 
@@ -71,12 +78,11 @@ export default function GeneralApp() {
           </Grid>
 
           {countObj.map((obj, index) => (
-            <Grid item xs={12} md={3}  key={index}>
+            <Grid item xs={12} md={3} key={index}>
               <AppWidgetSummary
-               
-                title={labelList?.[index]}
+                title={obj.status}
                 percent={2.6}
-                total={parseInt(obj.count,10)}
+                total={parseInt(obj.count, 10)}
                 chartColor={theme.palette.primary.main}
                 // chartData={[5, 18, 12, 51, 68, 11, 39, 37, 27, 20]}
               />
@@ -140,7 +146,18 @@ export default function GeneralApp() {
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
-            <AppAreaInstalled
+            <AppNewInvoice
+              title="Courierwise Pick Up Detail List"
+              tableData={_courierProvider}
+              tableLabels={[
+                { id: 'id', label: 'Sr No' },
+                { id: 'Courier', label: 'Courier Name' },
+                { id: 'Quantity', label: 'Quantity' },
+                // { id: 'status', label: 'Status' },
+                { id: '' },
+              ]}
+            />
+            {/* <AppAreaInstalled
               title="Area Installed"
               subheader="(+43%) than last year"
               chartLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']}
@@ -160,7 +177,7 @@ export default function GeneralApp() {
                   ],
                 },
               ]}
-            />
+            /> */}
           </Grid>
 
           <Grid item xs={12} md={12}>

@@ -44,3 +44,10 @@ export const _appFeatured = [...Array(3)].map((_, index) => ({
   description: _mock.text.title(index),
   image: _mock.image.feed(index),
 }));
+
+export const _courierProvider = [...Array(5)].map((_, index) => ({
+  id: index,
+  price: _mock.number.price(index),
+  category: randomInArray(['Delhivery', 'Xpress Bees', 'Ecom Express','Shadowfax']),
+  status: randomInArray(['paid', 'out_of_date', 'in_progress']),
+}));

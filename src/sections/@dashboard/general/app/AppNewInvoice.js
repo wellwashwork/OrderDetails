@@ -54,11 +54,11 @@ export default function AppNewInvoice({ title, subheader, tableData, tableLabels
 
       <Divider />
 
-      <Box sx={{ p: 2, textAlign: 'right' }}>
+      {/* <Box sx={{ p: 2, textAlign: 'right' }}>
         <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
           View All
         </Button>
-      </Box>
+      </Box> */}
     </Card>
   );
 }

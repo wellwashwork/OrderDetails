@@ -175,7 +175,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <div>
@@ -193,7 +193,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
               </div>
             </Stack>
           </Card>
-          <Stack spacing={3}>
+          <Stack spacing={3} mt={2}>
             <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
               {!isEdit ? 'Upload' : 'Save Changes'}
             </LoadingButton>
