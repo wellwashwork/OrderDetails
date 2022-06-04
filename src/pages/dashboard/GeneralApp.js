@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react';
+
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Container, Grid, Stack, Button } from '@mui/material';
+import axios from '../../utils/axios';
+
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -31,8 +35,16 @@ export default function GeneralApp() {
 
   const theme = useTheme();
 
-  const { themeStretch } = useSettings();
+  const [countObj, setcountObj] = useState([]);
+  const labelList = ['Return Received', 'RTO Return', 'Delivered', 'In Process'];
 
+  const { themeStretch } = useSettings();
+  useEffect(() => {
+    axios.get('api/orderStatusCount').then((res) => {
+      console.log(res.data);
+      setcountObj(res.data);
+    });
+  }, []);
   return (
     <Page title="General: App">
       <Container maxWidth={themeStretch ? false : 'xl'}>
@@ -58,39 +70,60 @@ export default function GeneralApp() {
             <AppFeatured list={_appFeatured} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <AppWidgetSummary
-              title="Total Active Users"
-              percent={2.6}
-              total={18765}
-              chartColor={theme.palette.primary.main}
-              chartData={[5, 18, 12, 51, 68, 11, 39, 37, 27, 20]}
-            />
-          </Grid>
+          {countObj.map((obj, index) => (
+            <Grid item xs={12} md={3}  key={index}>
+              <AppWidgetSummary
+               
+                title={labelList?.[index]}
+                percent={2.6}
+                total={parseInt(obj.count,10)}
+                chartColor={theme.palette.primary.main}
+                // chartData={[5, 18, 12, 51, 68, 11, 39, 37, 27, 20]}
+              />
+            </Grid>
+          ))}
 
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={2.4}>
             <AppWidgetSummary
-              title="Total Installed"
+              title="Total Deliverd"
               percent={0.2}
               total={4876}
               chartColor={theme.palette.chart.blue[0]}
-              chartData={[20, 41, 63, 33, 28, 35, 50, 46, 11, 26]}
+              // chartData={[20, 41, 63, 33, 28, 35, 50, 46, 11, 26]}
             />
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={2.4}>
             <AppWidgetSummary
-              title="Total Downloads"
+              title="Return Received"
               percent={-0.1}
               total={678}
               chartColor={theme.palette.chart.red[0]}
-              chartData={[8, 9, 31, 8, 16, 37, 8, 33, 46, 31]}
+              //  chartData={[8, 9, 31, 8, 16, 37, 8, 33, 46, 31]}
             />
           </Grid>
+          <Grid item xs={12} md={2.4}>
+            <AppWidgetSummary
+              title="In Process"
+              percent={-0.1}
+              total={678}
+              chartColor={theme.palette.chart.red[0]}
+              // chartData={[8, 9, 31, 8, 16, 37, 8, 33, 46, 31]}
+            />
+          </Grid>
+          <Grid item xs={12} md={2.4}>
+            <AppWidgetSummary
+              title="Payment Recevied"
+              percent={-0.1}
+              total={678}
+              chartColor={theme.palette.chart.red[0]}
+              //  chartData={[8, 9, 31, 8, 16, 37, 8, 33, 46, 31]}
+            />
+          </Grid> */}
 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentDownload
-              title="Current Download"
+              title="Courier wise Order"
               chartColors={[
                 theme.palette.primary.lighter,
                 theme.palette.primary.light,
@@ -98,10 +131,10 @@ export default function GeneralApp() {
                 theme.palette.primary.dark,
               ]}
               chartData={[
-                { label: 'Mac', value: 12244 },
-                { label: 'Window', value: 53345 },
-                { label: 'iOS', value: 44313 },
-                { label: 'Android', value: 78343 },
+                { label: 'Delhivery', value: 12244 },
+                { label: 'Xpress Bees', value: 53345 },
+                { label: 'Ecom Express', value: 44313 },
+                { label: 'Shadowfax', value: 78343 },
               ]}
             />
           </Grid>
@@ -130,9 +163,9 @@ export default function GeneralApp() {
             />
           </Grid>
 
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12} md={12}>
             <AppNewInvoice
-              title="New Invoice"
+              title="Order Detail List"
               tableData={_appInvoices}
               tableLabels={[
                 { id: 'id', label: 'Invoice ID' },
@@ -144,24 +177,24 @@ export default function GeneralApp() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppTopRelated title="Top Related Applications" list={_appRelated} />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppTopInstalledCountries title="Top Installed Countries" list={_appInstalled} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
             <AppTopAuthors title="Top Authors" list={_appAuthors} />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <Stack spacing={3}>
               <AppWidget title="Conversion" total={38566} icon={'eva:person-fill'} chartData={48} />
               <AppWidget title="Applications" total={55566} icon={'eva:email-fill'} color="warning" chartData={75} />
             </Stack>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

@@ -15,9 +15,10 @@ export default function ProductTableToolbar({ filterName, onFilterName }) {
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2.5, px: 3 }}>
       <TextField
+        fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search product..."
+        placeholder="Search by Suborder Id and AWD..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

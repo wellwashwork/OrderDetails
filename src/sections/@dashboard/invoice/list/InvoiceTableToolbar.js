@@ -42,7 +42,7 @@ export default function InvoiceTableToolbar({
       <TextField
         fullWidth
         select
-        label="Service type"
+        label="Date Range"
         value={filterService}
         onChange={onFilterService}
         SelectProps={{

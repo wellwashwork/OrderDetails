@@ -25,14 +25,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 AppWidgetSummary.propTypes = {
   chartColor: PropTypes.string.isRequired,
-  chartData: PropTypes.arrayOf(PropTypes.number).isRequired,
+  chartData: PropTypes.arrayOf(PropTypes.number),
   percent: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
   sx: PropTypes.object,
 };
 
-export default function AppWidgetSummary({ title, percent, total, chartColor, chartData, sx, ...other }) {
+export default function AppWidgetSummary({ title, percent, total, chartColor,  sx, ...other }) {
   const theme = useTheme();
 
   const chartOptions = {
@@ -76,7 +76,7 @@ export default function AppWidgetSummary({ title, percent, total, chartColor, ch
         <Typography variant="h3">{fNumber(total)}</Typography>
       </Box>
 
-      <ReactApexChart type="bar" series={[{ data: chartData }]} options={chartOptions} width={60} height={36} />
+      <ReactApexChart type="bar" series={[]} options={chartOptions} width={60} height={36} />
     </Card>
   );
 }

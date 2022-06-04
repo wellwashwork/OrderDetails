@@ -275,7 +275,7 @@ export default function InvoiceList() {
   useEffect(() => {
     mapingApiData();
   }, []);
-  const TABS = [
+  const wwww = [
     { value: 'all', label: 'All', color: 'info', count: tableData.length },
     { value: 'IN PROCESS', label: 'IN PROCESS', color: 'info', count: getLengthByStatus('IN PROCESS') },
     { value: 'DELIVERED', label: 'DELIVERED', color: 'success', count: getLengthByStatus('DELIVERED') },
@@ -366,7 +366,7 @@ export default function InvoiceList() {
             onChange={onFilterStatus}
             sx={{ px: 2, bgcolor: 'background.neutral' }}
           >
-            {TABS.map((tab) => (
+            {wwww.map((tab) => (
               <Tab
                 disableRipple
                 key={tab.value}

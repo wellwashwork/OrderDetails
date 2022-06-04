@@ -272,7 +272,7 @@ function applySortFilter({ tableData, comparator, filterName }) {
   tableData = stabilizedThis.map((el) => el[0]);
   // console.warn(tableData, 'after stabo');
   if (filterName) {
-    tableData = tableData.filter((item) => item.courierProvider.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
+    tableData = tableData.filter((item) => item.suborderId.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
   }
 
   // console.log(tableData, 'final retun');
