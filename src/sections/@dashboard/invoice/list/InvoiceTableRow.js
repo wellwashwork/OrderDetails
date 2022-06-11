@@ -62,23 +62,12 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
       
       <TableCell align="center">{suborderId}</TableCell>
 
-      <TableCell align="center">{awb}</TableCell>
+      <TableCell align="left">{awb}</TableCell>
      
       <TableCell align="center">{courierProvider}</TableCell>
       
       <TableCell align="center">{fDate(orderDate)}</TableCell>
       <TableCell align="center">{sku}</TableCell>
-      <TableCell align="center">{productName}</TableCell>
-      <TableCell align="center">{fCurrency(listingPrice)}</TableCell>
-      <TableCell align="center">{size}</TableCell>
-
-      <TableCell align="left">{paymentDate}</TableCell>
-
-      {/* <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
-        {sent}
-      </TableCell> */}
-
-      <TableCell align="center">{fCurrency(finalSettlementAmount)}</TableCell>
       <TableCell align="center">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -94,6 +83,17 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
           {status}
         </Label>
       </TableCell>
+      <TableCell align="center">{fCurrency(listingPrice)}</TableCell>
+      <TableCell align="center">{size}</TableCell>
+      <TableCell align="center">{productName}</TableCell>
+
+      <TableCell align="left">{paymentDate}</TableCell>
+
+      {/* <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
+        {sent}
+      </TableCell> */}
+
+      <TableCell align="center">{fCurrency(finalSettlementAmount)}</TableCell>
 
       {/* <TableCell align="right">
         <TableMoreMenu

@@ -67,12 +67,12 @@ const TABLE_HEAD = [
   { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
   { id: 'orderDate', label: 'orderDate', align: 'center' },
   { id: 'sku', label: 'sku', align: 'center' },
-  { id: 'productName', label: 'productName', align: 'center' },
+  { id: 'status', label: 'status', align: 'center' },
   { id: 'listingPrice', label: 'listingPrice', align: 'center' },
   { id: 'size', label: 'size', align: 'center' },
+  { id: 'productName', label: 'productName', align: 'center' },
   { id: 'paymentDate', label: 'paymentDate', align: 'center' },
   { id: 'finalSettlementAmount', label: 'finalSettlementAmount', align: 'center' },
-  { id: 'status', label: 'status', align: 'center' },
   { id: '' },
 ];
 
@@ -180,8 +180,8 @@ export default function InvoiceList() {
     setTableData(tableObj);
   };
   const filterDataApi = async (filterStartDate, filterEndDate) => {
-    const newStartDate = moment(filterStartDate).format('DD MMM, YYYY');
-    const newEndDate = moment(filterEndDate).format('DD MMM, YYYY');
+    const newStartDate = moment(filterStartDate).format('YYYY-MM-DD');
+    const newEndDate = moment(filterEndDate).format('YYYY-MM-DD');
 
     const response = await axios.get(`/api/data?startDate=${newStartDate}&endDate=${newEndDate}`);
     const tableObj = await response.data.map((obj, i) => [{ ...obj, id: String(i + 1) }][0]);
@@ -275,7 +275,7 @@ export default function InvoiceList() {
   useEffect(() => {
     mapingApiData();
   }, []);
-  const wwww = [
+  const TABS = [
     { value: 'all', label: 'All', color: 'info', count: tableData.length },
     { value: 'IN PROCESS', label: 'IN PROCESS', color: 'info', count: getLengthByStatus('IN PROCESS') },
     { value: 'DELIVERED', label: 'DELIVERED', color: 'success', count: getLengthByStatus('DELIVERED') },
@@ -366,7 +366,7 @@ export default function InvoiceList() {
             onChange={onFilterStatus}
             sx={{ px: 2, bgcolor: 'background.neutral' }}
           >
-            {wwww.map((tab) => (
+            {TABS.map((tab) => (
               <Tab
                 disableRipple
                 key={tab.value}

@@ -39,6 +39,8 @@ export default function GeneralApp() {
   const theme = useTheme();
 
   const [countObj, setcountObj] = useState([]);
+  const [tableData, setTableData] = useState([]);
+
   const labelList = ['Return Received', 'RTO Return', 'Delivered', 'In Process'];
 
   const { themeStretch } = useSettings();
@@ -46,6 +48,10 @@ export default function GeneralApp() {
     axios.get('api/orderStatusCount').then((res) => {
       console.log(res.data);
       setcountObj(res.data);
+    });
+    axios.get('api/todaysDate').then((res) => {
+      console.log(res.data);
+      setTableData(res.data);
     });
   }, []);
   return (
@@ -182,7 +188,7 @@ export default function GeneralApp() {
 
           <Grid item xs={12} md={12}>
             <AppNewInvoice
-              title="Order Detail List"
+              title="Today Order Detail List"
               tableData={_appInvoices}
               tableLabels={[
                 { id: 'id', label: 'Invoice ID' },
