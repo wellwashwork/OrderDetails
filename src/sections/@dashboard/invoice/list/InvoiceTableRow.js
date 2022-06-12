@@ -60,13 +60,26 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
 
       <TableCell align="center">{id}</TableCell>
       
-      <TableCell align="center">{suborderId}</TableCell>
-
-      <TableCell align="left">{awb}</TableCell>
-     
-      <TableCell align="center">{courierProvider}</TableCell>
+      <TableCell align="left">
       
-      <TableCell align="center">{fDate(orderDate)}</TableCell>
+      
+
+        <Stack>
+          <Typography variant="subtitle2" noWrap>
+          {courierProvider}
+          </Typography>
+
+          <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>
+            {awb}
+          </Link>
+        </Stack>
+      
+      </TableCell>
+
+      <TableCell align="left">{suborderId}</TableCell>
+     
+      
+      <TableCell align="left">{fDate(orderDate)}</TableCell>
       <TableCell align="center">{sku}</TableCell>
       <TableCell align="center">
         <Label

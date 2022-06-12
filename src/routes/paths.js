@@ -92,6 +92,12 @@ export const PATH_DASHBOARD = {
     view: (title) => path(ROOTS_DASHBOARD, `/blog/post/${title}`),
     demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
+  // courier: {
+  //   Delhivery:(id)=> `https://www.delhivery.com/track/package/${id}`,
+  //   Ecom_Express:(id)=> `https://ecomexpress.in/tracking/?awb_field=${id}&s=`,
+  //   Shadowfax:(id)=> `https://track.shadowfax.in/track?order=new&trackingId=${id}`,
+  //   Xpress_Bees:(id)=> `https://www.xpressbees.com/track?isawb=Yes&trackid=${id}`,
+  // },
 };
 
 export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';

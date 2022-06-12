@@ -62,9 +62,9 @@ const SERVICE_OPTIONS = [
 
 const TABLE_HEAD = [
   { id: 'id', label: 'id', align: 'center' },
-  { id: 'suborderId', label: 'SuborderId', align: 'center' },
-  { id: 'awb', label: 'AWB', align: 'center' },
-  { id: 'courierProvider', label: 'courierProvider', align: 'center', width: 180 },
+  { id: 'awb', label: 'Track Order', align: 'left' },
+  { id: 'suborderId', label: 'Suborder Id', align: 'left' },
+
   { id: 'orderDate', label: 'orderDate', align: 'center' },
   { id: 'sku', label: 'sku', align: 'center' },
   { id: 'status', label: 'status', align: 'center' },
@@ -141,8 +141,24 @@ export default function InvoiceList() {
     navigate(PATH_DASHBOARD.invoice.edit(id));
   };
 
-  const handleViewRow = (id) => {
-    navigate(PATH_DASHBOARD.invoice.view(id));
+  const handleViewRow = (id, courierProvider) => {
+    console.log(id, courierProvider);
+    if (courierProvider === 'Shadowfax') {
+      window.open(`https://track.shadowfax.in/track?order=new&trackingId=${id}`);
+
+      navigate(PATH_DASHBOARD.invoice.list);
+    } else if (courierProvider === 'Ecom Express') {
+      window.open(`https://ecomexpress.in/tracking/?awb_field=${id}&s=`);
+      navigate(PATH_DASHBOARD.invoice.list);
+    } else if (courierProvider === 'Xpress Bees') {
+      window.open(`https://www.xpressbees.com/track?isawb=Yes&trackid=${id}`);
+      navigate(PATH_DASHBOARD.invoice.list);
+    } else if (courierProvider === 'Delhivery') {
+      window.open(`https://www.delhivery.com/track/package/${id}`);
+      navigate(PATH_DASHBOARD.invoice.list);
+    } else {
+      alert('Courier Provider not found');
+    }
   };
   const dataFiltered = applySortFilter({
     tableData,
@@ -227,41 +243,34 @@ export default function InvoiceList() {
       const startDate = date.setDate(date.getDate() - 1);
       setFilterStartDate(new Date(startDate));
       setFilterEndDate(new Date(startDate));
-
     }
     if (filterService === 'Previous Week') {
       const startDate = moment().subtract(1, 'week').startOf('week');
       const endDate = moment().subtract(1, 'week').endOf('week');
       setFilterStartDate(new Date(startDate));
       setFilterEndDate(new Date(endDate));
-
     }
     if (filterService === 'Previous Month') {
       const startDate = moment().subtract(1, 'month').startOf('month');
       const endDate = moment().subtract(1, 'month').endOf('month');
       setFilterStartDate(new Date(startDate));
       setFilterEndDate(new Date(endDate));
-
     }
     if (filterService === 'Previous Quarter') {
       const startDate = moment().subtract(1, 'quarter').startOf('quarter');
       const endDate = moment().subtract(1, 'quarter').endOf('quarter');
       setFilterStartDate(new Date(startDate));
       setFilterEndDate(new Date(endDate));
-
     }
     if (filterService === 'Previous Year') {
       const startDate = moment().subtract(1, 'year').startOf('year');
       const endDate = moment().subtract(1, 'year').endOf('year');
       setFilterStartDate(new Date(startDate));
       setFilterEndDate(new Date(endDate));
-
     }
     if (filterService === 'Custom') {
-     
       setFilterStartDate(null);
       setFilterEndDate(null);
-
     }
   };
   useEffect(() => {
@@ -461,7 +470,7 @@ export default function InvoiceList() {
                       row={row}
                       selected={selected.includes(row.id)}
                       onSelectRow={() => onSelectRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
+                      onViewRow={() => handleViewRow(row.awb, row.courierProvider)}
                       onEditRow={() => handleEditRow(row.id)}
                       onDeleteRow={() => handleDeleteRow(row.id)}
                     />
@@ -477,7 +486,7 @@ export default function InvoiceList() {
 
           <Box sx={{ position: 'relative' }}>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[5, 10, 25,50,100]}
               component="div"
               count={dataFiltered.length}
               rowsPerPage={rowsPerPage}
